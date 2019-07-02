@@ -1,4 +1,5 @@
 HELP.md
+/target/
 abank-core/target/
 !.mvn/wrapper/maven-wrapper.jar
 
@@ -16,6 +17,8 @@ abank-core/target/
 *.iws
 *.iml
 *.ipr
+*.jar
+*.pom.properties
 
 ### NetBeans ###
 /nbproject/private/
