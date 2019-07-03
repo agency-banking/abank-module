@@ -1,6 +1,7 @@
 HELP.md
 /target/
 abank-core/target/
+*/target/
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
