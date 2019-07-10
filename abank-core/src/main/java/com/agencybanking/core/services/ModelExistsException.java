@@ -10,7 +10,7 @@ import lombok.Data;
  *
  */
 @Data
-public class ModelExistsException extends MbcpServiceException {
+public class ModelExistsException extends BizServiceException {
 	public static final String ERR_COMP_CODE_EXISTS = "core.company.codeexists";
     public static final String ERR_TEMPLATE_NAME_EXISTS = "messaging.template.exists";
     //Could not generate company code. Number of retries exceeded!

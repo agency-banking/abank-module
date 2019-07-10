@@ -4,6 +4,7 @@
 package com.agencybanking.security.users
 
 import com.agencybanking.core.data.Active
+import com.agencybanking.core.data.BaseEntity
 import com.agencybanking.core.data.BaseTenantEntity
 import com.agencybanking.core.el.Label
 import com.agencybanking.security.SecurityModule
@@ -20,7 +21,7 @@ import javax.validation.constraints.*
 @Entity
 @Table(name = "sec_user")
 @SequenceGenerator(name = "defaultSequenceGen", sequenceName = "SEC_USER_SEQ", allocationSize = 1)
-class User : BaseTenantEntity() {
+class User : BaseEntity() {
 
     @Label("Username")
     @Size(message = "security.user.username.size", max = 255)
@@ -70,6 +71,10 @@ class User : BaseTenantEntity() {
     @Size(message = "security.user.lastname.size", max = 100)
     @Column(name = "last_name", nullable = false)
     var lastName: String? = null
+
+    @Label("Email Verified")
+    @Column(name = "email_verified", nullable = false)
+    var emailVerified: Boolean = false
 
 
     @Label("Password")

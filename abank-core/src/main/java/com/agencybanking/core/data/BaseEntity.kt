@@ -27,9 +27,6 @@ open class BaseEntity : Data(), Codeable {
     @SequenceGenerator(name = "defaultSequenceGen", sequenceName = "HIBERNATE_SEQUENCE", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "defaultSequenceGen")
     var id: Long? = null
-        set(id) {
-            field = this.id
-        }
 
     @XmlTransient
     @Column(name = "active", nullable = false)
@@ -39,17 +36,11 @@ open class BaseEntity : Data(), Codeable {
     @Label("Creator")
     @Column(name = "created_by", nullable = false, updatable = false)
     var createdBy: String? = null
-        set(createdBy) {
-            field = this.createdBy
-        }
 
     @XmlTransient
     @LastModifiedBy
     @Column(name = "modified_by", nullable = false)
     var modifiedBy: String? = null
-        set(modifiedBy) {
-            field = this.modifiedBy
-        }
 
     @XmlTransient
     @CreatedDate
@@ -62,36 +53,23 @@ open class BaseEntity : Data(), Codeable {
     @Column(name = "modified_date")
     @Temporal(TemporalType.TIMESTAMP)
     var modifiedDate: Date? = null
-        set(modifiedDate) {
-            field = this.modifiedDate
-        }
 
     @Version
     @XmlTransient
     var version: Long? = null
-        set(version) {
-            field = this.version
-        }
 
     @XmlTransient
     @Column(name = "code", nullable = false, unique = true, updatable = false)
     var code: String? = null
-        set(code) {
-            field = this.code
-        }
+
 
     @XmlTransient
     @Transient
     var fromDate: Date? = null
-        set(fromDate) {
-            field = this.fromDate
-        }
+
     @XmlTransient
     @Transient
     var toDate: Date? = null
-        set(toDate) {
-            field = this.toDate
-        }
 
     open fun product(): String {
         throw UnsupportedOperationException("Kindly override BaseEntity#product() in " + BaseEntity::class.simpleName)

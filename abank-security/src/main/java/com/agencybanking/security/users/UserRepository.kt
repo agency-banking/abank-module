@@ -13,9 +13,7 @@ import java.util.Optional
 
 interface UserRepository : JpaRepository<User, Long>, QuerydslPredicateExecutor<User> {
 
-    fun findByUsername(username: String): User
-
-    fun findByUsernameAndCmpCode(username: String, cmpCode: String): Optional<User>
+    fun findByUsername(username: String): User?
 
     fun findByEmail(email: String): User
 

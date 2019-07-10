@@ -4,11 +4,14 @@
 package com.agencybanking.core.data
 
 import com.agencybanking.core.validation.ValidationUtils
+import com.agencybanking.core.web.messages.Message
+import com.fasterxml.jackson.annotation.JsonView
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.BeanUtils
 import org.springframework.util.StringUtils
 import java.io.*
+import java.util.ArrayList
 import javax.validation.ConstraintViolationException
 import javax.xml.bind.JAXB
 
@@ -34,9 +37,9 @@ open class Data : Serializable, BeanValidated {
         try {
             var res = ""
             if (header) {
-                res = res + "@" + this.javaClass.getName()
+                res = res + "@" + this.javaClass.name
             }
-            res = res + mapper.writeValueAsString(this)
+            res += mapper.writeValueAsString(this)
             return res
         } catch (e: JsonProcessingException) {
             // TODO Auto-generated catch block
@@ -99,12 +102,13 @@ open class Data : Serializable, BeanValidated {
     fun copyForUpdate(source: Any, vararg ignoreProperties: String) {
         val ignoreList = "createDate,version,modifiedDate,id,code,active,createdBy,modifiedBy,transactionRef,cmpCode,parentCmpCode"
         val ignores = StringUtils.concatenateStringArrays(ignoreProperties, ignoreList.split(",".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray())
-        BeanUtils.copyProperties(source, this, *ignores)
+        BeanUtils.copyProperties(source, this, *ignores!!)
     }
 
     companion object {
         val WILDCARD_ALL = "*"
         val LOCAL_CCY = "NGN"
+        const val PACKAGE = "com.agencybanking"
     }
 
 }

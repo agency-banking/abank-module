@@ -38,15 +38,15 @@ class BaseEntityListener {
         baseEntity.code = Utils.hash(baseEntity.forCode())
         println("Set Code ::: ${baseEntity.code}")
         //multitenancy
-        if(BaseTenantEntity::class.java.isAssignableFrom(baseEntity.javaClass)){
-            baseEntity as BaseTenantEntity
-            if (ObjectUtils.isEmpty(baseEntity.cmpCode)) {
-                baseEntity.cmpCode = auditDetails.cmpCode
-            }
-            if (ObjectUtils.isEmpty(baseEntity.parentCmpCode)) {
-                baseEntity.parentCmpCode = auditDetails.parentCmpCode
-            }
-        }
+//        if(BaseTenantEntity::class.java.isAssignableFrom(baseEntity.javaClass)){
+//            baseEntity as BaseTenantEntity
+//            if (ObjectUtils.isEmpty(baseEntity.cmpCode)) {
+//                baseEntity.cmpCode = auditDetails.cmpCode
+//            }
+//            if (ObjectUtils.isEmpty(baseEntity.parentCmpCode)) {
+//                baseEntity.parentCmpCode = auditDetails.parentCmpCode
+//            }
+//        }
     }
 
     @PreUpdate
