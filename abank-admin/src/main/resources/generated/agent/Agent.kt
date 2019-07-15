@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.agencybanking.agents
+package com.agencybanking.admin
 
 import javax.persistence.Entity
 import javax.persistence.Column
@@ -25,63 +25,62 @@ import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name = "ag_agent")
-class Agent (
+class Agent : BaseEntity() {
 
         @Label("First Name")
-		@NotBlank(message="agents.agent.firstname.empty")
-		@Size(min=1,message="agents.agent.firstname.size",max=50)
+		@Size(message="admin.agent.firstname.size",min=1,max=50)
+		@NotBlank(message="admin.agent.firstname.empty")
         @Column(name="first_nm",nullable=false)
-        var firstName: String,
+        var firstName: String
 
         @Label("Last Name")
-		@Size(message="agents.agent.lastname.size",min=1,max=50)
-		@NotBlank(message="agents.agent.lastname.empty")
+		@NotBlank(message="admin.agent.lastname.empty")
+		@Size(min=1,max=50,message="admin.agent.lastname.size")
         @Column(name="last_nm",nullable=false)
-        var lastName: String,
+        var lastName: String
 
         @Label("Phone")
-		@NotBlank(message="agents.agent.phone.empty")
-		@Size(message="agents.agent.phone.size",max=50)
+		@Size(message="admin.agent.phone.size",max=50)
+		@NotBlank(message="admin.agent.phone.empty")
         @Column(name="phone",nullable=false)
-        var phone: String,
+        var phone: String
 
         @Label("Email")
-		@Size(message="agents.agent.email.size",max=255)
-		@Email(message="agents.agent.email.email")
+		@Size(message="admin.agent.email.size",max=255)
+		@Email(message="admin.agent.email.email")
         @Column(name="email")
-        var email: String,
+        var email: String
 
         @Label("Geolocation")
-		@Size(message="agents.agent.geolocation.size",max=255)
+		@Size(message="admin.agent.geolocation.size",max=255)
         @Column(name="geo")
-        var geolocation: String,
+        var geolocation: String
 
         @Label("Address")
-		@Size(message="agents.agent.address.size",max=255)
+		@Size(message="admin.agent.address.size",max=255)
         @Column(name="address")
-        var address: String,
+        var address: String
 
         @Label("BVN")
-		@Size(message="agents.agent.bvn.size",max=255)
+		@Size(message="admin.agent.bvn.size",max=255)
         @Column(name="bvn")
-        var bvn: String,
+        var bvn: String
 
         @Label("Parent")
         @Column(name="parent")
-        var parent: Long,
+        var parent: Long
 
         @Label("Super")
-		@NotNull(message="agents.agent.super.required")
+		@NotNull(message="admin.agent.super.required")
         @Column(name="super_",nullable=false)
-        var super: boolean,
+        var super: boolean
 
         @Label("User Id")
-		@NotNull(message="agents.agent.userid.required")
-		@Size(message="agents.agent.userid.size",max=255)
+		@Size(message="admin.agent.userid.size",max=255)
+		@NotNull(message="admin.agent.userid.required")
         @Column(name="user_id",nullable=false)
         var userId: String
 
-    ): BaseEntity() {
 
 
 	override fun forCode(): String {
@@ -93,6 +92,6 @@ class Agent (
     }
 
     override fun module(): String {
-        return AgentsModule.CODE
+        return AdminModule.CODE
     }
 }

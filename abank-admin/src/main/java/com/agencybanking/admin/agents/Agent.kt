@@ -23,7 +23,7 @@ import javax.validation.constraints.Size
  */
 @Label("Agent")
 @Entity
-@Table(name = "ag_agent")
+@Table(name = "adm_agent")
 class Agent : BaseEntity() {
 
     @Valid

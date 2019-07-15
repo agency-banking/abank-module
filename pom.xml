@@ -12,6 +12,8 @@
         <module>abank-core</module>
         <module>abank-security</module>
         <module>abank-admin</module>
+        <module>abank-messaging</module>
+        <module>abank-flow</module>
     </modules>
 
     <properties>

@@ -24,7 +24,7 @@ public class EnumListProvider implements ListProvider{
 
 	public List<NameValue> loadList(String type, String exclude) throws ClassNotFoundException {
 		List<NameValue> result = new ArrayList<NameValue>();
-		Assert.notNull(type, "List messageType cannot be null");
+		Assert.notNull(type, "List appMessageType cannot be null");
 		Class enumClass = Class.forName(type);
 		DataList e = (DataList) enumClass.getAnnotation(DataList.class);
 		Assert.notNull(e, "Enum list must be annotated with @com.unionsystemsltd.optimus.core.web.lists.DataList");

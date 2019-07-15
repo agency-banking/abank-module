@@ -2,12 +2,22 @@ package com.agencybanking.admin.agents
 
 import com.agencybanking.admin.AdminModule
 import com.agencybanking.core.data.UniqueFieldExistsException
+import com.agencybanking.core.services.BaseService
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.util.Assert
 
 @Service
-class AgentService @Autowired constructor(val agentRepository: AgentRepository) {
+open class AgentService @Autowired constructor(val agentRepository: AgentRepository) : BaseService() {
+    private val log = LoggerFactory.getLogger(this.javaClass)
+
+    companion object {
+        val ACTION_CREATE = "ONBOARD"
+        val ACTION_UPDATE = "UPDATE"
+        val ACTION_DELETE = "DELETE"
+    }
+
     /**
      *
      * prepare agent - add all fields not supplied from front end.<br/>
@@ -19,11 +29,13 @@ class AgentService @Autowired constructor(val agentRepository: AgentRepository) 
     fun onboardAgent(agent: Agent): Agent {
         agent.also { prepareAgent(it) }
                 .also { it.validate() }
-                .also { businessRules(it, "CREATE") }
+                .also { businessRules(it, ACTION_CREATE) }
                 .also { unique(it, null) }
 
         agent.fillInUser()
         return agentRepository.save(agent)
+                .also { log.info("Agent onboarded ${agent.name.fullName()}") }
+                .also { broadcast(agent, ACTION_CREATE) }
     }
 
 
@@ -60,15 +72,22 @@ class AgentService @Autowired constructor(val agentRepository: AgentRepository) 
         found.copyForUpdate(agent)
         found.also { prepareAgent(it) }
                 .also { it.validate() }
-                .also { businessRules(it, "UPDATE") }
+                .also { businessRules(it, ACTION_UPDATE) }
                 .also { unique(it, found.id) }
         agent.fillInUser()
         return agentRepository.save(found)
+                .also { log.info("Agent modified ${agent.name.fullName()}") }
+                .also { broadcast(found, ACTION_UPDATE) }
     }
 
-    fun delete(id: Long?) {
+    fun delete(id: Long) {
+        val agent = findById(id)
         agentRepository.deleteById(id)
+                .also { log.info("Agent deleted ${agent.name.fullName()}") }
+                .also { broadcast(agent, ACTION_DELETE) }
     }
 
-
+    fun list(agent: Agent): Any? {
+        return agentRepository.findAll()
+    }
 }

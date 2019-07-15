@@ -1,7 +1,9 @@
 package com.agencybanking.core.web;
 
 import com.agencybanking.core.services.AppContextHolder;
+import com.agencybanking.core.web.messages.ErrorMessage;
 import com.agencybanking.core.web.messages.Message;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -18,12 +20,18 @@ import static com.agencybanking.core.web.messages.MessageType.*;
 @Slf4j
 public class Response {
     private final Object payload;
+    @JsonIgnore
     private final MessageSource messageSource;
     private List<Message> messages = new ArrayList<>();
 
     private Response(Object t, MessageSource messageSource) {
         this.payload = t;
         this.messageSource = messageSource;
+    }
+
+    private Response(MessageSource messageSource) {
+        this.messageSource = messageSource;
+        this.payload = null;
     }
 
     /**
@@ -45,7 +53,7 @@ public class Response {
      * @param params parameters to be resolved
      */
     public Response error(String code, Object... params) {
-        Message message = new Message(code, resolveMessage(code, params), ERROR);
+        ErrorMessage message = new ErrorMessage(code, resolveMessage(code, params), ERROR);
         this.getMessages().add(message);
         return this;
     }
@@ -86,5 +94,9 @@ public class Response {
 
     public static Response of(Object t, MessageSource messageSource) {
         return new Response(t, messageSource);
+    }
+
+    public static Response of(MessageSource messageSource) {
+        return new Response(messageSource);
     }
 }

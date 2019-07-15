@@ -21,7 +21,7 @@ public class BizEvent extends Data {
     protected String module;
     protected String product;
     protected String code;
-    protected String event;
+    protected String action;
     protected String companyCode;
     private boolean fireAppflow = true;
     private boolean elasticate;
@@ -70,8 +70,8 @@ public class BizEvent extends Data {
         return this;
     }
 
-    public BizEvent evt(String productEvent) {
-        this.event = productEvent;
+    public BizEvent action(String action) {
+        this.action = action;
         return this;
     }
 
@@ -139,7 +139,7 @@ public class BizEvent extends Data {
     public void validate() throws ConstraintViolationException {
         hasLength(module, "Module must be present");
         hasLength(product, "Product must be present");
-        notNull(event, "Product Event must be present");
+        notNull(action, "Product Action must be present");
     }
 
     public BizEvent fireApproval(boolean shouldFireApproval) {

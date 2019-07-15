@@ -14,4 +14,8 @@ public abstract class BaseController {
     public Response respondWith(Object t) {
         return Response.of(t, messageSource);
     }
+
+    public Response respond() {
+        return Response.of(null, messageSource);
+    }
 }
