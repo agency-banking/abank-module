@@ -22,7 +22,7 @@ class MsgReciever @Autowired constructor(val emailProcessor: EmailProcessor,
 
     fun checkMessageData(appMessage: AppMessage) {
         val messages = mutableListOf<String>()
-        if (appMessage.recipients.isEmpty()){
+        if (appMessage.recipients.isEmpty()) {
             messages.add(InvalidMessageException.RECIPIENTS_REQUIRED)
         }
         if (messages.isNotEmpty()) {

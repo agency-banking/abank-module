@@ -85,7 +85,7 @@ class AgentServiceTest @Autowired constructor(val agentService: agentService, va
     @Test
     fun `Delete Agent`() {
         agentRepository.save(agent)
-        this.mockMvc.perform(delete("/agents/delete/${agent.id}")
+        this.mockMvc.perform(delete("/agents/delete/$r{agent.id}")
             .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk)
             .andExpect(jsonPath("$.messages[0].msgCode", `is`("success.agent.deleted")))
         val agents = agentRepository.findAll()

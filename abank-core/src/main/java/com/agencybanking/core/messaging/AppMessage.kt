@@ -41,6 +41,8 @@ class AppMessage {
     var product: String? = null
     @XmlAttribute
     var module: String? = null
+
+    var expiryPeriodMillis: Long? = null
 //    @XmlAttribute
 //    var ref: String? = null
 //

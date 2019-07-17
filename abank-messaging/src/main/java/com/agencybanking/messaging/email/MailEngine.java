@@ -3,7 +3,6 @@ package com.agencybanking.messaging.email;
 import com.agencybanking.core.storage.ResourceProvider;
 import com.agencybanking.core.utils.Utils;
 import com.agencybanking.messaging.MessagingModule;
-import com.agencybanking.messaging.queue.MsgQueueData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -40,16 +39,16 @@ public class MailEngine {
         this.module = module;
     }
 
-    public void send(MsgQueueData mail) throws Exception {
+    public void send(MailQueueData mail) throws Exception {
         doSend(mail);
     }
 
     @Async
-    public void sendAsync(MsgQueueData mail) throws Exception {
+    public void sendAsync(MailQueueData mail) throws Exception {
         doSend(mail);
     }
 
-    private void doSend(MsgQueueData mail) throws Exception {
+    private void doSend(MailQueueData mail) throws Exception {
         MimeMessage mime = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mime, true);
 
@@ -69,7 +68,7 @@ public class MailEngine {
         log.info("mail sent successfully [{}], [{}]", mail.getSubject(), mail.getRecipients());
     }
 //
-    public Resource getAttachmentKeyResource(MsgQueueData msg) throws URISyntaxException, MalformedURLException {
+    public Resource getAttachmentKeyResource(MailQueueData msg) throws URISyntaxException, MalformedURLException {
         if (!StringUtils.isEmpty(msg.getAttachmentUrl())){
             return getAttachmentResource(msg.getAttachmentUrl());
         }

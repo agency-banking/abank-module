@@ -37,6 +37,10 @@
                 <version>${kotlin.version}</version>
                 <configuration>
                     <jvmTarget>1.8</jvmTarget>
+                    <compilerPlugins>
+                    <plugin>spring</plugin>
+                    <plugin>jpa</plugin>
+                    </compilerPlugins>
                 </configuration>
                 <executions>
                     <execution>
