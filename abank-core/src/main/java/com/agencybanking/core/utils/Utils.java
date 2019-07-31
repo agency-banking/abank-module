@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.util.DigestUtils;
@@ -19,10 +20,7 @@ import javax.xml.bind.JAXB;
 import java.io.StringReader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.regex.Matcher;
@@ -243,5 +241,14 @@ public class Utils {
 
     public static Boolean getBoolean(Boolean value) {
         return ObjectUtils.isEmpty(value) ? Boolean.FALSE : value;
+    }
+
+    public static String generateSoftToken(int size) {
+        return org.apache.commons.lang3.StringUtils.leftPad(new Random().nextInt(1000000) + "", size, "0");
+    }
+
+    @NotNull
+    public static String leftPad(String str, String padStr, int size) {
+        return org.apache.commons.lang3.StringUtils.leftPad(str, size, padStr);
     }
 }

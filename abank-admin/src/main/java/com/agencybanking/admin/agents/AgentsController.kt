@@ -19,13 +19,13 @@ class AgentsController @Autowired constructor(val agentService: AgentService) : 
     @PutMapping("/onboard")
     fun onboardAgent(@RequestBody agent: Agent): ResponseEntity<Response> {
         val onboardAgent = agentService.onboardAgent(agent)
-        return ok(respondWith(onboardAgent.code).success(AdminModule.SUC_ONBOARD_AGENT, onboardAgent.name.fullName()))
+        return ok(respondWith(onboardAgent.code).success(AdminModule.SUC_ONBOARD_AGENT, onboardAgent.user.name.fullName()))
     }
 
     @PatchMapping("/updateAgent")
     fun updateAgentInfo(@RequestBody agent: Agent): ResponseEntity<Response> {
         val updatedAgent = agentService.updateAgent(agent)
-        return ok(respondWith(updatedAgent).success(AdminModule.SUC_UPDATE_AGENT, updatedAgent.name.fullName()))
+        return ok(respondWith(updatedAgent).success(AdminModule.SUC_UPDATE_AGENT, updatedAgent.user.name.fullName()))
     }
 
     @GetMapping("/findById/{id}")

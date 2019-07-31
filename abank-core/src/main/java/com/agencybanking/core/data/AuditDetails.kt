@@ -18,6 +18,9 @@ class AuditDetails : Serializable {
     var companyType: String? = null
     var companyTIN: String? = null
 
+    constructor(createdBy: String) {
+        this.createdBy = createdBy
+    }
     constructor(createdBy: String, companyCode: String) {
         this.createdBy = createdBy
         this.cmpCode = companyCode

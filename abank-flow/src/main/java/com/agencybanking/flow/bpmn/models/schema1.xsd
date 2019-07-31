@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="definitions" type="processDefinition"/>
+
+  <xs:complexType name="endEvent">
+    <xs:complexContent>
+      <xs:extension base="bpmnNode">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="bpmnNode">
+    <xs:sequence/>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="name" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="startEvent">
+    <xs:complexContent>
+      <xs:extension base="bpmnNode">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="processDefinition">
+    <xs:sequence>
+      <xs:element name="process" type="processDef" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="processDef">
+    <xs:sequence>
+      <xs:element name="startEvent" type="startEvent" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="endEvent" type="endEvent" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="sequenceFlow" type="flow" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="userTask" type="userTask" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="serviceTask" type="serviceTask" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="messageTask" type="messageTask" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="name" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="flow">
+    <xs:sequence>
+      <xs:element name="conditionExpression" type="conditionExpression" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="sourceRef" type="xs:string" use="required"/>
+    <xs:attribute name="targetRef" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:simpleType name="conditionExpression">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+
+  <xs:complexType name="userTask">
+    <xs:complexContent>
+      <xs:extension base="bpmnNode">
+        <xs:sequence>
+          <xs:element name="documentation" type="documentation" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="dueDate" type="xs:dateTime"/>
+        <xs:attribute name="assignee" type="xs:string"/>
+        <xs:attribute name="candidateUsers" type="xs:string"/>
+        <xs:attribute name="candidateGroups" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:simpleType name="documentation">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+
+  <xs:complexType name="serviceTask">
+    <xs:complexContent>
+      <xs:extension base="bpmnNode">
+        <xs:sequence/>
+        <xs:attribute name="expression" type="xs:string"/>
+        <xs:attribute name="resultVariable" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="messageTask">
+    <xs:complexContent>
+      <xs:extension base="bpmnNode">
+        <xs:sequence>
+          <xs:element name="template" type="xs:string" minOccurs="0"/>
+          <xs:element name="text" type="xs:string" minOccurs="0"/>
+          <xs:element name="recipients" type="xs:string" minOccurs="0"/>
+          <xs:element name="copies" type="xs:string" minOccurs="0"/>
+          <xs:element name="blind-copies" type="xs:string" minOccurs="0"/>
+          <xs:element name="subject" type="xs:string" minOccurs="0"/>
+          <xs:element name="attachment-url" type="xs:string" minOccurs="0"/>
+          <xs:element name="attachment-name" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="type" type="messageType" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="processDefBuilder">
+    <xs:sequence>
+      <xs:element name="id" type="xs:string" minOccurs="0"/>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+      <xs:element name="start" type="startEvent" minOccurs="0"/>
+      <xs:element name="end" type="endEvent" minOccurs="0"/>
+      <xs:element name="flows" type="flow" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="userTasks" type="userTask" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="serviceTasks" type="serviceTask" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="messageTasks" type="messageTask" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="flowBuilder">
+    <xs:sequence>
+      <xs:element name="id" type="xs:string" minOccurs="0"/>
+      <xs:element name="sourceRef" type="xs:string" minOccurs="0"/>
+      <xs:element name="targetRef" type="xs:string" minOccurs="0"/>
+      <xs:element name="condition" type="conditionExpression" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="messageType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="EMAIl"/>
+      <xs:enumeration value="SMS"/>
+      <xs:enumeration value="WEB"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+

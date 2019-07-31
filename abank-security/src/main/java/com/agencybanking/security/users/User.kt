@@ -6,11 +6,13 @@ package com.agencybanking.security.users
 import com.agencybanking.core.data.Active
 import com.agencybanking.core.data.BaseEntity
 import com.agencybanking.core.data.BaseTenantEntity
+import com.agencybanking.core.data.Name
 import com.agencybanking.core.el.Label
 import com.agencybanking.security.SecurityModule
 import org.springframework.util.Assert
 import java.time.LocalDateTime
 import javax.persistence.*
+import javax.validation.Valid
 import javax.validation.constraints.*
 
 /**
@@ -36,13 +38,13 @@ class User : BaseEntity() {
 
     @Label("Phone Number")
     @Size(max = 50, message = "security.user.phonenumber.size")
-    var phoneNumber: String? = null
+    var phoneNumber: String = ""
 
 
     @Label("Email")
     @Email(message = "security.user.email.email")
     @Size(message = "security.user.email.size", max = 255)
-    var email: String? = null
+    var email: String = ""
 
 
     @Label("Login Attempt")
@@ -58,19 +60,10 @@ class User : BaseEntity() {
     @Column(name = "first_login")
     var firstLogin: Boolean? = null
 
-
-    @Label("First Name")
-    @Size(max = 100, message = "security.user.firstname.size")
-    @NotBlank(message = "security.user.firstname.empty")
-    @Column(name = "first_name", nullable = false)
-    var firstName: String? = null
-
-
-    @Label("Last Name")
-    @NotBlank(message = "security.user.lastname.empty")
-    @Size(message = "security.user.lastname.size", max = 100)
-    @Column(name = "last_name", nullable = false)
-    var lastName: String? = null
+    @Valid
+    @Label("", embedded = true)
+    @Embedded
+    var name: Name = Name()
 
     @Label("Email Verified")
     @Column(name = "email_verified", nullable = false)
@@ -107,14 +100,6 @@ class User : BaseEntity() {
 
     override fun forCode(): String {
         return this.username + (username + System.currentTimeMillis())
-    }
-
-    fun fullname(): String? {
-        return "$firstName $lastName"
-    }
-
-    fun official(): String {
-        return "$lastName $firstName"
     }
 
     override fun product(): String {

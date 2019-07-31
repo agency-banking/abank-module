@@ -15,7 +15,11 @@ interface UserRepository : JpaRepository<User, Long>, QuerydslPredicateExecutor<
 
     fun findByUsername(username: String): User?
 
-    fun findByEmail(email: String): User
+    fun findByEmail(email: String?): User?
+
+    fun findByEmailAndIdNot(email: String, id: Long): User?
+    fun findByPhoneNumber(phone: String): User?
+    fun findByPhoneNumberAndIdNot(phone: String, id: Long): User?
 
     fun findByCode(code: String): User
 

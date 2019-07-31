@@ -27,22 +27,21 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 class AgentServiceTest @Autowired constructor(val agentService: AgentService, val agentRepository: AgentRepository,
                                               val userRepository: UserRepository, val mockMvc: MockMvc) {
     var agent = Agent().apply {
-        this.email = "udubic@gmail.com"
-        this.phone = "08032356801"
-        this.name.firstName = "dubic"
-        this.name.lastName = "uzuegbu"
+
         this.address.houseNo = "7"
         this.address.street = "oyewole habeeb"
         this.address.city = "gbagada"
         this.user.username = "udubic@gmail.com"
         this.user.email = "udubic@gmail.com"
-        this.user.firstName = "dubic"
-        this.user.lastName = "uzuegbu"
-    }
+        this.user.name.firstName = "dubic"
+        this.user.name.lastName = "uzuegbu"
+        this.user.phoneNumber = "08032356801"
+    }.also { it.agentId = agentService.buildAgentId(it) }
 
     @BeforeEach
     fun setUp() {
         agentRepository.deleteAll()
+        userRepository.deleteAll()
     }
 
     @AfterEach
@@ -59,7 +58,7 @@ class AgentServiceTest @Autowired constructor(val agentService: AgentService, va
     @Test
     fun `Agent Unique Fields check update`() {
         agentRepository.save(agent)
-        agentService.unique(agent, agent.id)
+        agentService.unique(agent, agent.user.id)
     }
 
     @Test
@@ -90,24 +89,24 @@ class AgentServiceTest @Autowired constructor(val agentService: AgentService, va
     @Test
     fun `Update Agent Info`() {
         agentRepository.save(agent)
-        agent.name.firstName = "dubine"
-        agent.email = "dubine@updated.com"
+        agent.user.name.firstName = "dubine"
+        agent.user.email = "dubine@updated.com"
 
         this.mockMvc.perform(patch("/agents/updateAgent")
                 .content(Utils.toJson(agent))
                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk)
                 .andExpect(jsonPath("$.messages[0].msgCode", `is`("success.agent.updated")))
-                .andExpect(jsonPath("$.payload.name.firstName", `is`("dubine")))
+                .andExpect(jsonPath("$.payload.user.name.firstName", `is`("dubine")))
 
         val agent = agentRepository.findById(agent.id!!).get()
 
-        assertThat("Agent name was not updated", agent.name.firstName, `is`("dubine"))
-        assertThat("Agent email was not updated", agent.email, `is`("dubine@updated.com"))
+        assertThat("Agent name was not updated", agent.user.name.firstName, `is`("dubine"))
+        assertThat("Agent email was not updated", agent.user.email, `is`("dubine@updated.com"))
         assertThat("Agent user email was not updated", agent.user.email, `is`("dubine@updated.com"))
         //user login saved
         val user = userRepository.findByUsername(agent.user.username)
         assertThat("User email not updated", user?.email, `is`("dubine@updated.com"))
-        assertThat("User firstname not updated", user?.firstName, `is`("dubine"))
+        assertThat("User firstname not updated", user?.name?.firstName, `is`("dubine"))
     }
 
     @Test
@@ -127,7 +126,7 @@ class AgentServiceTest @Autowired constructor(val agentService: AgentService, va
         agentRepository.save(agent)
         this.mockMvc.perform(get("/agents/findById/${agent.id}")
                 .contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk)
-                .andExpect(jsonPath("$.payload.email", `is`(agent.email)))
+                .andExpect(jsonPath("$.payload.user.email", `is`(agent.user.email)))
     }
 
     @Test
@@ -136,7 +135,7 @@ class AgentServiceTest @Autowired constructor(val agentService: AgentService, va
         this.mockMvc.perform(post("/agents/list")
                 .content(Utils.toJson(agent))
                 .contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk)
-                .andExpect(jsonPath("$.payload[0].email", `is`(agent.email)))
+                .andExpect(jsonPath("$.payload[0].user.email", `is`(agent.user.email)))
     }
 
 
